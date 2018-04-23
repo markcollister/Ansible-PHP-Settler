@@ -80,6 +80,9 @@
     - Restart php-fpm
     - Restart nginx
 
+- stat: path={{settler_nginx_site_folder_root}}
+  register: settler_nginx_site_folder_root
+
 # Own the web directory
 - name: Set permissions on the web directory
   file:
@@ -90,6 +93,7 @@
     owner: "{{ ansible_user }}"
     group: www-data
     mode: 0770
+  when: settler_nginx_site_folder_root.stat.exists == False
 
 # Set the nginx user to allow writing to public
 #- name: Set the nginx user to allow writing to the public folder
